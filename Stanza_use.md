@@ -16,7 +16,7 @@ https://github.com/stanfordnlp/stanza/blob/main/demo/Stanza_Beginners_Guide.ipyn
 
 If you change this setting later, you might have to run all the cells again.
 
-( How does this differ from:  
+(You can also work from instruction given in lecture:    
 *Runtime* -> *Change runtime type* )
 
 ---------------------------------------------------------
