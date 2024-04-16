@@ -85,6 +85,8 @@ CoNLL.write_doc2conll(doc, "output.conllu")
 
 See the conllu output by double clicking the file in Files sidebar of Colab. You can also download the file on your own computer and open it in a text editor or Excel (how? import?). It is a conventional tsv (tab separated values) text file.
 
+If you are completely new to the topic, you can simply copy a short example using copy and paste and open it in Excel.
+
 Alternatively run one of these. They show the actual tabs, unlike the Colab editor:
 
 ```python
