@@ -59,7 +59,7 @@ https://github.com/nlp-uoregon/trankit/blob/00848efe75e0fd10a8f0a40c589659da5f89
 (erroneous docstring?)  
 )
 
-#### Trankit built-in method:
+### Trankit built-in method works:
 ```python
 from trankit import trankit2conllu
 
@@ -70,10 +70,10 @@ conlludoc = trankit2conllu(processed_doc)
 See: https://github.com/nlp-uoregon/trankit/releases/tag/v1.1.0
 
 Problems:
-- it doesn' write `# text = ...` and ConlluEditor refuses to work with them `General error: Cannot invoke "String.length()" because the return value of "com.orange.labs.conllparser.ConllSentence.getText()" is null`. Even `--relax` option doesn't help.
-- it doesn't put `SpaceAfter=No` in the last column before a stop, and ConlluEditor complains `|incoherent "# text" and forms`.
+- it doesn't write `# text = ...` and ConlluEditor refuses to work with them `General error: Cannot invoke "String.length()" because the return value of "com.orange.labs.conllparser.ConllSentence.getText()" is null`. Even `--relax` option doesn't help.
+- Even if `# text = ...` is added separately, the method doesn't write `SpaceAfter=No` in the last column before a stop, and ConlluEditor complains `|incoherent "# text" and forms`. But now it at least works. 
 
-#### Jenna's methods modified:
+### Jenna's methods modified:
 ```python
 # define functions for processing the trankit output format
 
@@ -89,6 +89,10 @@ def dict2conllu(d, filename):
               print(token2line(token), file=f)
             print(file=f)
 ```
+
+Problems:
+- does not work with mwt's
+- writes original document line breaks to `# text = ...`, which breaks them.
 
 ## Test multi word tokens (mwt)
 
@@ -119,15 +123,30 @@ print(trankit2conllu(out_doc))
 ```python
 # Use Jenna's functions modified:
 dict2conllu(out_doc)
-# text = ... ok.
+
+# text = ... 
+# Problem: Keeps line breaks from the original!
+
 # mwt broken:
 # (12, 13)	du	_	_	_	_	_	_	_	_
 # 14	Sujet	_	_	_	_	_	_	_	_
 ```
 
+```
+# text = Je sens qu'entre ça et les films de médecins et scientifiques fous que nous
+avons déjà vus, nous pourrions emprunter un autre chemin pour l'origine.
+1	Je	_	_	_	_	_	_	_	_
+
+# text = On
+pourra toujours parler à propos d'Averroès de "décentrement du Sujet".
+1	On	_	_	_	_	_	_	_	_
+```
+
 ## Options:
 
-If you don't have multi word tokens, use the Jenna's functions.
+If you don't have multi word tokens, remove line breaks from your data, and then use the Jenna's functions.
+
+Or remove the extraneous line breaks from the resulting conllu.
 
 -------------------------------------------------
 If you need mwt's, use the trankit method:
@@ -151,7 +170,7 @@ Then ConlluEditor will complain, but should work(?)
 
 If you really need the `# text = `'s to be valid, hmm.... Use a pretokenized input and combine them.
 
-Or write a script to put the text's in from the FORM column. But then, as the SpaceAfter's are also missing from trankit, you will have space before commas and other punctuation.
+Or write a script to put the text's back in from the FORM column (does such a thing exist already?). But then, as the SpaceAfter's are also missing from trankit, you will have space before commas and other punctuation. (But that would actually cure ConlluEditor's complaints!)
 
 ## Save / Download your result conllu
 
